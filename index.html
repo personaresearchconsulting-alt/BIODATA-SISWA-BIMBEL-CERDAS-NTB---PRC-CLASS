@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Biodata Peserta - PRC CLASS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --navy:#0B192C;
+    --navy2:#1E3E62;
+    --cream:#F8F9FA;
+    --white:#fff;
+    --rose:#D97757;
+    --text:#1D2A44;
+    --muted:#5C6B82;
+    --border:#E2E8F0;
+    --danger:#C0392B;
+    --success:#188A42
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0
+}
+
+body{
+    font-family:Inter,sans-serif;
+    background:var(--cream);
+    color:var(--text);
+    line-height:1.6
+}
+
+header{
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    padding:1.2rem 2rem
+}
+
+.brand{
+    font:800 1.2rem 'Plus Jakarta Sans';
+    color:var(--navy);
+    text-decoration:none
+}
+
+.brand span{
+    color:var(--rose)
+}
+
+main{
+    max-width:950px;
+    margin:auto;
+    padding:2.5rem 1rem 4rem
+}
+
+.header{
+    text-align:center;
+    margin-bottom:2rem
+}
+
+.header h1{
+    font:800 clamp(1.7rem,4vw,2.3rem) 'Plus Jakarta Sans';
+    color:var(--navy)
+}
+
+.header p{
+    color:var(--muted)
+}
+
+.card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:1.5rem;
+    margin-bottom:1.2rem;
+    box-shadow:0 4px 12px rgba(11,25,44,.04)
+}
+
+.card h2{
+    font:700 1.05rem 'Plus Jakarta Sans';
+    color:var(--navy);
+    margin-bottom:1.2rem;
+    border-bottom:1px solid var(--border);
+    padding-bottom:.7rem
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:1rem
+}
+
+.group{
+    margin-bottom:.2rem
+}
+
+.group.full{
+    grid-column:1/-1
+}
+
+label{
+    display:block;
+    font-weight:600;
+    font-size:.88rem;
+    color:var(--navy);
+    margin-bottom:.4rem
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:.78rem .9rem;
+    border:1px solid var(--border);
+    border-radius:9px;
+    font:inherit;
+    color:var(--text);
+    outline:none;
+    background:#fff
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--navy);
+    box-shadow:0 0 0 3px rgba(11,25,44,.07)
+}
+
+textarea{
+    min-height:105px;
+    resize:vertical
+}
+
+.hint{
+    font-size:.76rem;
+    color:var(--muted);
+    margin-top:.3rem
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+    display:flex;
+    gap:.7rem;
+    flex-wrap:wrap
+}
+
+.search-box input{
+    flex:1;
+    min-width:220px
+}
+
+.search-box button{
+    white-space:nowrap
+}
+
+
+/* =========================
+   FOTO POJOK KANAN ATAS
+========================= */
+
+.photo-top{
+    display:flex;
+    justify-content:flex-end;
+    align-items:flex-start;
+    margin-bottom:1.5rem
+}
+
+.photo-box{
+    width:190px;
+    text-align:center
+}
+
+.preview{
+    width:125px;
+    height:155px;
+    margin-left:auto;
+    margin-right:auto;
+    border:1px dashed #B8C1CC;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    background:#F8FAFC;
+    color:var(--muted);
+    font-size:.8rem;
+    text-align:center
+}
+
+.preview img{
+    width:100%;
+    height:100%;
+    object-fit:cover
+}
+
+.photo-controls{
+    margin-top:.7rem
+}
+
+.photo-input{
+    width:100%;
+    padding:.55rem;
+    background:#F8FAFC;
+    font-size:.78rem
+}
+
+
+/* =========================
+   EDIT
+========================= */
+
+.edit-info{
+    display:none;
+    margin-bottom:1rem;
+    padding:.85rem 1rem;
+    border-radius:9px;
+    background:#EEF2F6;
+    color:var(--navy);
+    font-size:.88rem;
+    border:1px solid var(--border)
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.actions{
+    display:flex;
+    gap:.8rem;
+    justify-content:flex-end;
+    flex-wrap:wrap
+}
+
+button{
+    border:0;
+    border-radius:9px;
+    padding:.9rem 1.2rem;
+    font:700 .95rem 'Plus Jakarta Sans';
+    cursor:pointer
+}
+
+.primary{
+    background:var(--navy);
+    color:#fff
+}
+
+.secondary{
+    background:#EEF2F6;
+    color:var(--navy)
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:wait
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message{
+    display:none;
+    margin-bottom:1rem;
+    padding:.9rem 1rem;
+    border-radius:9px;
+    font-size:.9rem
+}
+
+.message.success{
+    display:block;
+    background:#EAF7EF;
+    color:var(--success);
+    border:1px solid #BDE5C8
+}
+
+.message.error{
+    display:block;
+    background:#FDECEC;
+    color:var(--danger);
+    border:1px solid #F5C6C6
+}
+
+.message.info{
+    display:block;
+    background:#EEF2F6;
+    color:var(--navy);
+    border:1px solid var(--border)
+}
+
+
+@media(max-width:700px){
+
+    header{
+        padding:1rem 1.2rem
+    }
+
+    .grid{
+        grid-template-columns:1fr
+    }
+
+    .group.full{
+        grid-column:auto
+    }
+
+    .card{
+        padding:1.1rem
+    }
+
+    .actions button{
+        width:100%
+    }
+
+    .search-box button{
+        width:100%
+    }
+
+    .photo-top{
+        justify-content:center
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<header>
+
+<a class="brand" href="index.html">
+PRC <span>CLASS - BIMBEL CERDAS NTB</span>
+</a>
+
+</header>
+
+
+<main>
+
+
+<div class="header">
+
+<h1>BIODATA PESERTA</h1>
+
+<p>
+Lengkapi profil Anda untuk kebutuhan pembelajaran dan latihan wawancara seleksi.
+</p>
+
+</div>
+
+
+<!-- =========================
+     CARI BIODATA
+========================= -->
+
+<section class="card">
+
+<h2>Cari Biodata Peserta</h2>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchNama"
+placeholder="Masukkan Nama Lengkap"
+>
+
+<button
+type="button"
+class="primary"
+id="searchButton"
+onclick="cariBiodata()"
+>
+CARI BIODATA
+</button>
+
+<button
+type="button"
+class="secondary"
+onclick="biodataBaru()"
+>
+BIODATA BARU
+</button>
+
+</div>
+
+</section>
+
+
+<div
+id="message"
+class="message"
+></div>
+
+
+<div
+id="editInfo"
+class="edit-info"
+>
+Biodata ditemukan. Anda sedang dalam <strong>mode edit</strong>.
+Silakan ubah data yang diperlukan lalu klik <strong>UPDATE BIODATA</strong>.
+</div>
+
+
+<form id="biodataForm">
+
+
+<!-- =========================
+     1. IDENTITAS PESERTA
+========================= -->
+
+<section class="card">
+
+<h2>1. Identitas Peserta</h2>
+
+
+<!-- FOTO DI POJOK KANAN ATAS -->
+
+<div class="photo-top">
+
+<div class="photo-box">
+
+<div
+id="photoPreview"
+class="preview"
+>
+Foto peserta
+</div>
+
+<div class="photo-controls">
+
+<label for="foto">
+Foto Peserta
+</label>
+
+<input
+id="foto"
+name="foto"
+class="photo-input"
+type="file"
+accept="image/jpeg,image/png"
+>
+
+<div class="hint">
+
+JPG/PNG, maksimal 2 MB.<br>
+Foto bersifat opsional.<br>
+Jika edit tanpa foto baru, foto lama tetap digunakan.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ISIAN DATA DIMULAI DI BAWAH FOTO -->
+
+<div class="grid">
+
+
+<!-- NAMA LENGKAP PALING PERTAMA -->
+
+<div class="group">
+
+<label>
+Nama Lengkap
+</label>
+
+<input
+name="namaLengkap"
+id="namaLengkap"
+placeholder="Nama lengkap peserta"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Target Seleksi
+</label>
+
+<select name="targetSeleksi">
+
+<option value="">
+Pilih
+</option>
+
+<option>
+POLRI
+</option>
+
+<option>
+TNI
+</option>
+
+<option>
+KEDINASAN
+</option>
+
+</select>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Nama Panggilan
+</label>
+
+<input
+name="namaPanggilan"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Jenis Kelamin
+</label>
+
+<select name="jenisKelamin">
+
+<option value="">
+Pilih
+</option>
+
+<option>
+Laki-laki
+</option>
+
+<option>
+Perempuan
+</option>
+
+</select>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Tempat Lahir
+</label>
+
+<input
+name="tempatLahir"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Tanggal Lahir
+</label>
+
+<input
+name="tanggalLahir"
+type="date"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Agama
+</label>
+
+<input
+name="agama"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+No. WhatsApp
+</label>
+
+<input
+name="whatsapp"
+inputmode="tel"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Email
+</label>
+
+<input
+name="email"
+type="email"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Tinggi Badan (cm)
+</label>
+
+<input
+name="tinggi"
+type="number"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Berat Badan (kg)
+</label>
+
+<input
+name="berat"
+type="number"
+>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Alamat Lengkap
+</label>
+
+<textarea
+name="alamat"
+></textarea>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     2. PENDIDIKAN
+========================= -->
+
+<section class="card">
+
+<h2>2. Pendidikan</h2>
+
+<div class="grid">
+
+
+<div class="group">
+
+<label>
+Asal Sekolah / Kampus
+</label>
+
+<input
+name="sekolah"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Jurusan
+</label>
+
+<input
+name="jurusan"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Tahun Lulus
+</label>
+
+<input
+name="tahunLulus"
+type="number"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Pendidikan Terakhir
+</label>
+
+<input
+name="pendidikanTerakhir"
+>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     3. DATA ORANG TUA
+========================= -->
+
+<section class="card">
+
+<h2>3. Data Orang Tua</h2>
+
+<div class="grid">
+
+
+<div class="group">
+
+<label>
+Nama Ayah
+</label>
+
+<input
+name="namaAyah"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Pekerjaan Ayah
+</label>
+
+<input
+name="pekerjaanAyah"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Pendidikan Ayah
+</label>
+
+<input
+name="pendidikanAyah"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+No. HP Ayah
+</label>
+
+<input
+name="hpAyah"
+inputmode="tel"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Nama Ibu
+</label>
+
+<input
+name="namaIbu"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Pekerjaan Ibu
+</label>
+
+<input
+name="pekerjaanIbu"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Pendidikan Ibu
+</label>
+
+<input
+name="pendidikanIbu"
+>
+
+</div>
+
+
+<div class="group">
+
+<label>
+No. HP Ibu
+</label>
+
+<input
+name="hpIbu"
+inputmode="tel"
+>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Jumlah Saudara Kandung
+</label>
+
+<input
+name="jumlahSaudara"
+type="number"
+min="0"
+>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     4. PENGALAMAN & PRESTASI
+========================= -->
+
+<section class="card">
+
+<h2>4. Pengalaman & Prestasi</h2>
+
+<div class="grid">
+
+
+<div class="group full">
+
+<label>
+Organisasi / Kegiatan yang Pernah Diikuti
+</label>
+
+<textarea
+name="organisasi"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Prestasi / Penghargaan
+</label>
+
+<textarea
+name="prestasi"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Pengalaman Kepemimpinan / Tanggung Jawab
+</label>
+
+<textarea
+name="kepemimpinan"
+></textarea>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     5. PROFIL DIRI
+========================= -->
+
+<section class="card">
+
+<h2>
+5. Profil Diri — Bahan Latihan Wawancara
+</h2>
+
+<div class="grid">
+
+
+<div class="group full">
+
+<label>
+Apa kelebihan utama diri Anda?
+</label>
+
+<textarea
+name="kelebihan"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Apa kekurangan diri Anda?
+</label>
+
+<textarea
+name="kekurangan"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Apa yang sedang Anda lakukan untuk memperbaiki kekurangan tersebut?
+</label>
+
+<textarea
+name="perbaikan"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Hobi / kegiatan yang paling sering dilakukan
+</label>
+
+<textarea
+name="hobi"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Kemampuan atau keterampilan yang Anda miliki
+</label>
+
+<textarea
+name="keterampilan"
+></textarea>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     6. MOTIVASI & TARGET
+========================= -->
+
+<section class="card">
+
+<h2>
+6. Motivasi & Target Seleksi
+</h2>
+
+<div class="grid">
+
+
+<div class="group full">
+
+<label>
+Mengapa Anda memilih POLRI / TNI / Kedinasan?
+</label>
+
+<textarea
+name="alasan"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Apa yang sudah Anda lakukan untuk mempersiapkan diri?
+</label>
+
+<textarea
+name="persiapan"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Apa target Anda dalam seleksi ini?
+</label>
+
+<textarea
+name="target"
+></textarea>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Pernah mengikuti seleksi sebelumnya?
+</label>
+
+<select name="pernahSeleksi">
+
+<option value="">
+Pilih
+</option>
+
+<option>
+Belum pernah
+</option>
+
+<option>
+Sudah pernah
+</option>
+
+</select>
+
+</div>
+
+
+<div class="group">
+
+<label>
+Tahun seleksi terakhir
+</label>
+
+<input
+name="tahunSeleksi"
+type="number"
+>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Pengalaman seleksi / hal yang ingin diperbaiki
+</label>
+
+<textarea
+name="pengalamanSeleksi"
+></textarea>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     7. TANTANGAN
+========================= -->
+
+<section class="card">
+
+<h2>
+7. Tantangan & Pengalaman Diri
+</h2>
+
+<div class="grid">
+
+
+<div class="group full">
+
+<label>
+Pengalaman paling sulit yang pernah Anda hadapi
+</label>
+
+<textarea
+name="pengalamanSulit"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Bagaimana Anda mengatasinya?
+</label>
+
+<textarea
+name="caraMengatasi"
+></textarea>
+
+</div>
+
+
+<div class="group full">
+
+<label>
+Pengalaman bekerja sama atau menyelesaikan perbedaan dengan orang lain
+</label>
+
+<textarea
+name="kerjaSama"
+></textarea>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     BUTTON
+========================= -->
+
+<div class="actions">
+
+<button
+type="button"
+class="secondary"
+onclick="location.href='index.html'"
+>
+KEMBALI
+</button>
+
+
+<button
+id="resetButton"
+type="button"
+class="secondary"
+onclick="biodataBaru()"
+>
+BIODATA BARU
+</button>
+
+
+<button
+id="saveButton"
+class="primary"
+type="submit"
+>
+SIMPAN BIODATA
+</button>
+
+</div>
+
+
+</form>
+
+</main>
+
+
+<script>
+
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbyFxmO0ocvr5HqK2WuGyjt7_JeTOcs4vGDg7QZejeiE2QvCP_qkonJcZc5hz9AFW2Vg/exec";
+
+
+const form =
+document.getElementById("biodataForm");
+
+const foto =
+document.getElementById("foto");
+
+const preview =
+document.getElementById("photoPreview");
+
+const msg =
+document.getElementById("message");
+
+const btn =
+document.getElementById("saveButton");
+
+const editInfo =
+document.getElementById("editInfo");
+
+
+let fotoBase64 = "";
+
+let existingFotoURL = "";
+
+let editMode = false;
+
+
+/* =========================
+   FOTO
+========================= */
+
+foto.addEventListener(
+"change",
+function(){
+
+    const file =
+        foto.files[0];
+
+    if(!file){
+        return;
+    }
+
+
+    if(
+        file.size >
+        2 * 1024 * 1024
+    ){
+
+        foto.value = "";
+
+        fotoBase64 = "";
+
+        showMessage(
+            "error",
+            "Ukuran foto maksimal 2 MB."
+        );
+
+        return;
+    }
+
+
+    if(
+        file.type !==
+        "image/jpeg" &&
+        file.type !==
+        "image/png"
+    ){
+
+        foto.value = "";
+
+        fotoBase64 = "";
+
+        showMessage(
+            "error",
+            "Format foto harus JPG atau PNG."
+        );
+
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(){
+
+            fotoBase64 =
+                reader.result;
+
+            preview.innerHTML =
+                "<img src='" +
+                fotoBase64 +
+                "' alt='Foto peserta'>";
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+});
+
+
+/* =========================
+   CARI BIODATA
+========================= */
+
+async function cariBiodata(){
+
+    const nama =
+        document
+        .getElementById("searchNama")
+        .value
+        .trim();
+
+
+    if(!nama){
+
+        showMessage(
+            "error",
+            "Silakan masukkan Nama Lengkap untuk mencari biodata."
+        );
+
+        return;
+    }
+
+
+    const searchButton =
+        document.getElementById(
+            "searchButton"
+        );
+
+
+    searchButton.disabled =
+        true;
+
+    searchButton.textContent =
+        "MENCARI...";
+
+
+    try{
+
+        const url =
+            SCRIPT_URL +
+            "?mode=getBiodata&namaLengkap=" +
+            encodeURIComponent(nama);
+
+
+        const response =
+            await fetch(url);
+
+
+        const result =
+            await response.json();
+
+
+        if(
+            result.status !==
+            "success"
+        ){
+
+            throw new Error(
+                result.message ||
+                "Biodata tidak ditemukan."
+            );
+
+        }
+
+
+        isiForm(
+            result.data
+        );
+
+
+        editMode =
+            true;
+
+
+        editInfo.style.display =
+            "block";
+
+
+        btn.textContent =
+            "UPDATE BIODATA";
+
+
+        showMessage(
+            "success",
+            "Biodata ditemukan. Silakan edit data yang diperlukan."
+        );
+
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+
+    }catch(error){
+
+        showMessage(
+            "error",
+            error.message ||
+            "Biodata tidak ditemukan."
+        );
+
+    }finally{
+
+        searchButton.disabled =
+            false;
+
+        searchButton.textContent =
+            "CARI BIODATA";
+
+    }
+
+}
+
+
+/* =========================
+   SIMPAN / UPDATE
+========================= */
+
+form.addEventListener(
+"submit",
+async function(e){
+
+    e.preventDefault();
+
+
+    const data =
+        Object.fromEntries(
+            new FormData(form).entries()
+        );
+
+
+    const nama =
+        String(
+            data.namaLengkap || ""
+        ).trim();
+
+
+    if(!nama){
+
+        showMessage(
+            "error",
+            "Nama Lengkap perlu diisi."
+        );
+
+        document
+        .getElementById(
+            "namaLengkap"
+        )
+        .focus();
+
+        return;
+    }
+
+
+    const kosong =
+        cariBagianKosong(
+            data
+        );
+
+
+    btn.disabled =
+        true;
+
+
+    const modeSaatIni =
+        editMode
+            ? "updateBiodata"
+            : "saveBiodata";
+
+
+    btn.textContent =
+        editMode
+            ? "MEMPERBARUI..."
+            : "MENYIMPAN...";
+
+
+    try{
+
+        data.mode =
+            modeSaatIni;
+
+
+        data.fotoBase64 =
+            fotoBase64 || "";
+
+
+        data.existingFotoURL =
+            existingFotoURL || "";
+
+
+        const response =
+            await fetch(
+                SCRIPT_URL,
+                {
+                    method:"POST",
+                    mode:"cors",
+                    headers:{
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+                    body:
+                        JSON.stringify(data)
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if(
+            result.status !==
+            "success"
+        ){
+
+            throw new Error(
+                result.message ||
+                "Biodata gagal disimpan."
+            );
+
+        }
+
+
+        if(
+            result.fotoURL
+        ){
+
+            existingFotoURL =
+                result.fotoURL;
+
+            tampilkanFoto(
+                existingFotoURL
+            );
+
+        }
+
+
+        editMode =
+            true;
+
+
+        editInfo.style.display =
+            "block";
+
+
+        btn.textContent =
+            "UPDATE BIODATA";
+
+
+        if(
+            kosong.length > 0
+        ){
+
+            showMessage(
+                "success",
+                "Biodata berhasil disimpan. Masih ada bagian yang belum diisi, tetapi data tetap berhasil disimpan."
+            );
+
+        }else{
+
+            showMessage(
+                "success",
+                modeSaatIni ===
+                "updateBiodata"
+                    ? "Biodata berhasil diperbarui."
+                    : "Biodata berhasil disimpan."
+            );
+
+        }
+
+
+    }catch(error){
+
+        showMessage(
+            "error",
+            error.message ||
+            "Terjadi kesalahan saat menyimpan biodata."
+        );
+
+    }finally{
+
+        btn.disabled =
+            false;
+
+        btn.textContent =
+            editMode
+                ? "UPDATE BIODATA"
+                : "SIMPAN BIODATA";
+
+    }
+
+});
+
+
+/* =========================
+   CEK BAGIAN KOSONG
+========================= */
+
+function cariBagianKosong(data){
+
+    const fields = [
+
+        ["targetSeleksi","Target Seleksi"],
+        ["namaPanggilan","Nama Panggilan"],
+        ["jenisKelamin","Jenis Kelamin"],
+        ["tempatLahir","Tempat Lahir"],
+        ["tanggalLahir","Tanggal Lahir"],
+        ["agama","Agama"],
+        ["whatsapp","No. WhatsApp"],
+        ["email","Email"],
+        ["tinggi","Tinggi Badan"],
+        ["berat","Berat Badan"],
+        ["alamat","Alamat"],
+        ["sekolah","Asal Sekolah / Kampus"],
+        ["jurusan","Jurusan"],
+        ["tahunLulus","Tahun Lulus"],
+        ["pendidikanTerakhir","Pendidikan Terakhir"],
+        ["namaAyah","Nama Ayah"],
+        ["pekerjaanAyah","Pekerjaan Ayah"],
+        ["pendidikanAyah","Pendidikan Ayah"],
+        ["hpAyah","No. HP Ayah"],
+        ["namaIbu","Nama Ibu"],
+        ["pekerjaanIbu","Pekerjaan Ibu"],
+        ["pendidikanIbu","Pendidikan Ibu"],
+        ["hpIbu","No. HP Ibu"],
+        ["jumlahSaudara","Jumlah Saudara Kandung"],
+        ["organisasi","Organisasi"],
+        ["prestasi","Prestasi"],
+        ["kepemimpinan","Kepemimpinan"],
+        ["kelebihan","Kelebihan"],
+        ["kekurangan","Kekurangan"],
+        ["perbaikan","Perbaikan"],
+        ["hobi","Hobi"],
+        ["keterampilan","Keterampilan"],
+        ["alasan","Alasan"],
+        ["persiapan","Persiapan"],
+        ["target","Target"],
+        ["pernahSeleksi","Pernah Seleksi"],
+        ["tahunSeleksi","Tahun Seleksi"],
+        ["pengalamanSeleksi","Pengalaman Seleksi"],
+        ["pengalamanSulit","Pengalaman Sulit"],
+        ["caraMengatasi","Cara Mengatasi"],
+        ["kerjaSama","Kerja Sama"]
+
+    ];
+
+
+    const hasil = [];
+
+
+    fields.forEach(
+        function(item){
+
+            const key =
+                item[0];
+
+            const label =
+                item[1];
+
+
+            if(
+                !data[key] ||
+                String(data[key]).trim() === ""
+            ){
+
+                hasil.push(label);
+
+            }
+
+        }
+    );
+
+
+    return hasil;
+
+}
+
+
+/* =========================
+   ISI FORM DARI DATABASE
+========================= */
+
+function isiForm(data){
+
+    const fields = [
+
+        "namaLengkap",
+        "targetSeleksi",
+        "namaPanggilan",
+        "jenisKelamin",
+        "tempatLahir",
+        "tanggalLahir",
+        "agama",
+        "whatsapp",
+        "email",
+        "tinggi",
+        "berat",
+        "alamat",
+        "sekolah",
+        "jurusan",
+        "tahunLulus",
+        "pendidikanTerakhir",
+        "namaAyah",
+        "pekerjaanAyah",
+        "pendidikanAyah",
+        "hpAyah",
+        "namaIbu",
+        "pekerjaanIbu",
+        "pendidikanIbu",
+        "hpIbu",
+        "jumlahSaudara",
+        "organisasi",
+        "prestasi",
+        "kepemimpinan",
+        "kelebihan",
+        "kekurangan",
+        "perbaikan",
+        "hobi",
+        "keterampilan",
+        "alasan",
+        "persiapan",
+        "target",
+        "pernahSeleksi",
+        "tahunSeleksi",
+        "pengalamanSeleksi",
+        "pengalamanSulit",
+        "caraMengatasi",
+        "kerjaSama"
+
+    ];
+
+
+    fields.forEach(
+        function(field){
+
+            const element =
+                document.querySelector(
+                    "[name='" +
+                    field +
+                    "']"
+                );
+
+
+            if(element){
+
+                element.value =
+                    data[field] == null
+                        ? ""
+                        : data[field];
+
+            }
+
+        }
+    );
+
+
+    existingFotoURL =
+        data.fotoURL ||
+        data.FotoURL ||
+        "";
+
+
+    fotoBase64 =
+        "";
+
+
+    foto.value =
+        "";
+
+
+    if(existingFotoURL){
+
+        tampilkanFoto(
+            existingFotoURL
+        );
+
+    }else{
+
+        preview.innerHTML =
+            "Foto peserta";
+
+    }
+
+}
+
+
+/* =========================
+   TAMPILKAN FOTO
+========================= */
+
+function tampilkanFoto(url){
+
+    if(!url){
+
+        preview.innerHTML =
+            "Foto peserta";
+
+        return;
+    }
+
+
+    preview.innerHTML =
+        "<img src='" +
+        escapeHtml(url) +
+        "' alt='Foto peserta'>";
+
+}
+
+
+/* =========================
+   BIODATA BARU
+========================= */
+
+function biodataBaru(){
+
+    form.reset();
+
+
+    fotoBase64 =
+        "";
+
+    existingFotoURL =
+        "";
+
+    editMode =
+        false;
+
+
+    preview.innerHTML =
+        "Foto peserta";
+
+
+    editInfo.style.display =
+        "none";
+
+
+    btn.textContent =
+        "SIMPAN BIODATA";
+
+
+    hideMessage();
+
+
+    document
+    .getElementById(
+        "searchNama"
+    )
+    .value =
+        "";
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+    type,
+    text
+){
+
+    msg.className =
+        "message " +
+        type;
+
+    msg.textContent =
+        text;
+
+    msg.style.display =
+        "block";
+
+}
+
+
+function hideMessage(){
+
+    msg.className =
+        "message";
+
+    msg.textContent =
+        "";
+
+    msg.style.display =
+        "none";
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
