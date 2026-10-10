@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -40,10 +41,16 @@ button:disabled{opacity:.6;cursor:wait}
 <main>
 <div class="header"><h1>BIODATA PESERTA</h1><p>Lengkapi profil Anda untuk kebutuhan data siswa, pembelajaran dan latihan wawancara seleksi.</p></div>
 <div id="message" class="message"></div>
+
 <section class="card" id="editLookupCard">
 <h2>Sudah Pernah Mengisi Biodata?</h2>
-<p class="hint" style="margin-bottom:.8rem">Cari menggunakan nama lengkap yang sama dengan biodata sebelumnya. Data akan dimuat agar bisa diedit dan disimpan kembali.</p>
+<p class="hint" style="margin-bottom:.8rem">Masukkan password PRC CLASS dan nama lengkap yang sama dengan biodata sebelumnya untuk mencari atau mengedit data.</p>
 <div class="grid">
+  <div class="group full">
+    <label for="biodataPassword">Password PRC CLASS <span class="required">*</span></label>
+    <input id="biodataPassword" type="password" autocomplete="current-password" placeholder="Masukkan password PRC CLASS">
+    <p class="hint">Password diperlukan untuk mencari, menyimpan, dan mengubah biodata.</p>
+  </div>
   <div class="group"><label for="lookupName">Nama Lengkap Terdaftar</label><input id="lookupName" autocomplete="name" placeholder="Masukkan nama lengkap"></div>
   <div class="group" style="display:flex;align-items:end;gap:.6rem;flex-wrap:wrap">
     <button type="button" id="findBiodataButton" class="primary">CARI BIODATA</button>
@@ -51,6 +58,7 @@ button:disabled{opacity:.6;cursor:wait}
   </div>
 </div>
 </section>
+
 <form id="biodataForm">
 <section class="card">
 <h2>1. Identitas Peserta</h2>
@@ -153,26 +161,16 @@ button:disabled{opacity:.6;cursor:wait}
 </div>
 </form>
 </main>
+
 <script>
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbyFxmO0ocvr5HqK2WuGyjt7_JeTOcs4vGDg7QZejeiE2QvCP_qkonJcZc5hz9AFW2Vg/exec";
 const form=document.getElementById("biodataForm"), foto=document.getElementById("foto"), preview=document.getElementById("photoPreview"), msg=document.getElementById("message"), btn=document.getElementById("saveButton");
-const findBtn=document.getElementById("findBiodataButton"), newBtn=document.getElementById("newBiodataButton"), lookupName=document.getElementById("lookupName");
+const findBtn=document.getElementById("findBiodataButton"), newBtn=document.getElementById("newBiodataButton"), lookupName=document.getElementById("lookupName"), biodataPassword=document.getElementById("biodataPassword");
 let fotoBase64="", isEditing=false, existingFotoURL="", originalNamaLengkap="";
 
 function showMessage(type,text,scrollToMessage=false){msg.className="message"+(type?" "+type:"");msg.textContent=text||"";if(scrollToMessage){requestAnimationFrame(()=>msg.scrollIntoView({behavior:"smooth",block:"start"}));}}
 function normKey(value){return String(value||"").toLowerCase().replace(/[^a-z0-9]/g,"");}
-function getJsonp(url){
- return new Promise((resolve,reject)=>{
-  const callbackName="prcBiodataCb_"+Date.now()+"_"+Math.floor(Math.random()*100000);
-  const script=document.createElement("script");
-  const timer=setTimeout(()=>{cleanup();reject(new Error("Pencarian biodata ke server melewati batas waktu. Coba lagi."));},15000);
-  function cleanup(){clearTimeout(timer);try{delete window[callbackName];}catch(e){window[callbackName]=undefined;}if(script.parentNode)script.parentNode.removeChild(script);}
-  window[callbackName]=data=>{cleanup();resolve(data);};
-  script.onerror=()=>{cleanup();reject(new Error("Tidak dapat menghubungi server biodata."));};
-  script.src=url+(url.includes("?")?"&":"?")+"callback="+encodeURIComponent(callbackName);
-  document.head.appendChild(script);
- });
-}
+
 function setFieldValue(name,value){
  const field=form.elements.namedItem(name); if(!field)return;
  let v=value==null?"":String(value);
@@ -186,6 +184,7 @@ function setFieldValue(name,value){
   field.value=option?option.value:"";
  }else if(field.type!=="file") field.value=v;
 }
+
 function setFormFromRecord(record){
  const lookup={}; Object.keys(record||{}).forEach(k=>lookup[normKey(k)]=record[k]);
  [...form.elements].forEach(field=>{
@@ -193,12 +192,13 @@ function setFormFromRecord(record){
   const key=normKey(field.name);
   if(Object.prototype.hasOwnProperty.call(lookup,key))setFieldValue(field.name,lookup[key]);
  });
- existingFotoURL=String(lookup.fotourl||lookup.fotourl||"");
+ existingFotoURL=String(lookup.fotourl||"");
  fotoBase64="";foto.value="";
  if(existingFotoURL){preview.innerHTML="";const img=document.createElement("img");img.alt="Foto peserta tersimpan";img.src=existingFotoURL;img.onerror=()=>{preview.textContent="Foto tersimpan. Pilih foto baru jika ingin mengganti.";};preview.appendChild(img);}
  else preview.textContent="Foto peserta belum tersedia";
  originalNamaLengkap=String(lookup.namalengkap||"");
 }
+
 function setEditingMode(editing){
  isEditing=editing;
  const nameField=form.elements.namedItem("namaLengkap"), codeField=form.elements.namedItem("kodeSiswa");
@@ -208,6 +208,7 @@ function setEditingMode(editing){
  document.getElementById("photoRequiredMark").style.display=editing?"none":"inline";
  btn.textContent=editing?"SIMPAN PERUBAHAN":"SIMPAN BIODATA";
 }
+
 function resetToNew(){
  form.reset();fotoBase64="";existingFotoURL="";originalNamaLengkap="";foto.value="";preview.textContent="Foto peserta";
  setEditingMode(false);showMessage("","");
@@ -224,36 +225,62 @@ foto.addEventListener("change",()=>{
 
 findBtn.addEventListener("click",async()=>{
  const name=lookupName.value.trim();
+ const password=biodataPassword.value.trim();
+
+ if(!password){showMessage("error","Masukkan password PRC CLASS terlebih dahulu.");biodataPassword.focus();return;}
  if(!name){showMessage("error","Masukkan nama lengkap yang digunakan saat menyimpan biodata.");lookupName.focus();return;}
+
  findBtn.disabled=true;findBtn.textContent="MENCARI...";showMessage("","");
  try{
-  const url=SCRIPT_URL+"?mode=getbiodata&namaLengkap="+encodeURIComponent(name);
-  const result=await getJsonp(url);
+  const response=await fetch(SCRIPT_URL,{
+   method:"POST",
+   mode:"cors",
+   headers:{"Content-Type":"text/plain;charset=utf-8"},
+   body:JSON.stringify({mode:"getbiodata",password:password,namaLengkap:name})
+  });
+  const result=await response.json();
   if(result.status!=="success")throw new Error(result.message||"Biodata tidak ditemukan.");
   const record=result.biodata||result.data;
   if(!record||typeof record!=="object")throw new Error("Data biodata tidak ditemukan atau format data tidak sesuai.");
   setFormFromRecord(record);setEditingMode(true);
   showMessage("success","Biodata ditemukan. Silakan ubah data yang diperlukan, lalu tekan SIMPAN PERUBAHAN.");
   form.scrollIntoView({behavior:"smooth",block:"start"});
- }catch(err){showMessage("error",err.message||"Biodata gagal dimuat.");}
- finally{findBtn.disabled=false;findBtn.textContent="CARI BIODATA";}
+ }catch(err){
+  showMessage("error",err.message||"Biodata gagal dimuat.");
+ }finally{
+  findBtn.disabled=false;findBtn.textContent="CARI BIODATA";
+ }
 });
+
 newBtn.addEventListener("click",resetToNew);
 lookupName.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();findBtn.click();}});
+biodataPassword.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();findBtn.click();}});
 
 form.addEventListener("submit",async e=>{
  e.preventDefault();showMessage("","");
+
+ const password=biodataPassword.value.trim();
+ if(!password){showMessage("error","Masukkan password PRC CLASS terlebih dahulu.");biodataPassword.focus();return;}
  if(!isEditing&&!fotoBase64){showMessage("error","Silakan pilih foto peserta terlebih dahulu untuk biodata baru.");foto.focus();return;}
  if(isEditing&&!originalNamaLengkap){showMessage("error","Data nama awal tidak terbaca. Cari ulang biodata sebelum menyimpan perubahan.");return;}
+
  btn.disabled=true;btn.textContent=isEditing?"MENYIMPAN PERUBAHAN...":"MENYIMPAN...";
  const data=Object.fromEntries(new FormData(form).entries());
  data.mode=isEditing?"updateBiodata":"saveBiodata";
+ data.password=password;
  if(fotoBase64)data.fotoBase64=fotoBase64;
  if(isEditing){data.existingFotoURL=existingFotoURL;data.namaLengkap=originalNamaLengkap;}
+
  try{
-  const response=await fetch(SCRIPT_URL,{method:"POST",mode:"cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+  const response=await fetch(SCRIPT_URL,{
+   method:"POST",
+   mode:"cors",
+   headers:{"Content-Type":"text/plain;charset=utf-8"},
+   body:JSON.stringify(data)
+  });
   const result=await response.json();
   if(result.status!=="success")throw new Error(result.message||"Biodata gagal disimpan.");
+
   if(isEditing){
    existingFotoURL=result.fotoURL||existingFotoURL;
    if(result.fotoURL&&!fotoBase64){existingFotoURL=result.fotoURL;}
@@ -262,9 +289,13 @@ form.addEventListener("submit",async e=>{
    showMessage("success","Biodata berhasil disimpan. Untuk mengeditnya nanti, cari nama lengkap pada bagian atas halaman.",true);
    if(result.fotoURL)existingFotoURL=result.fotoURL;
   }
- }catch(err){showMessage("error",err.message||"Terjadi kesalahan saat menyimpan biodata.",true);}
- finally{btn.disabled=false;btn.textContent=isEditing?"SIMPAN PERUBAHAN":"SIMPAN BIODATA";}
+ }catch(err){
+  showMessage("error",err.message||"Terjadi kesalahan saat menyimpan biodata.",true);
+ }finally{
+  btn.disabled=false;btn.textContent=isEditing?"SIMPAN PERUBAHAN":"SIMPAN BIODATA";
+ }
 });
 </script>
 </body>
 </html>
+```
