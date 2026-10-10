@@ -159,7 +159,7 @@ const form=document.getElementById("biodataForm"), foto=document.getElementById(
 const findBtn=document.getElementById("findBiodataButton"), newBtn=document.getElementById("newBiodataButton"), lookupName=document.getElementById("lookupName");
 let fotoBase64="", isEditing=false, existingFotoURL="", originalNamaLengkap="";
 
-function showMessage(type,text){msg.className="message"+(type?" "+type:"");msg.textContent=text||"";}
+function showMessage(type,text,scrollToMessage=false){msg.className="message"+(type?" "+type:"");msg.textContent=text||"";if(scrollToMessage){requestAnimationFrame(()=>msg.scrollIntoView({behavior:"smooth",block:"start"}));}}
 function normKey(value){return String(value||"").toLowerCase().replace(/[^a-z0-9]/g,"");}
 function getJsonp(url){
  return new Promise((resolve,reject)=>{
@@ -257,12 +257,12 @@ form.addEventListener("submit",async e=>{
   if(isEditing){
    existingFotoURL=result.fotoURL||existingFotoURL;
    if(result.fotoURL&&!fotoBase64){existingFotoURL=result.fotoURL;}
-   showMessage("success","Perubahan biodata berhasil disimpan.");
+   showMessage("success","Perubahan biodata berhasil disimpan.",true);
   }else{
-   showMessage("success","Biodata berhasil disimpan. Untuk mengeditnya nanti, cari nama lengkap pada bagian atas halaman.");
+   showMessage("success","Biodata berhasil disimpan. Untuk mengeditnya nanti, cari nama lengkap pada bagian atas halaman.",true);
    if(result.fotoURL)existingFotoURL=result.fotoURL;
   }
- }catch(err){showMessage("error",err.message||"Terjadi kesalahan saat menyimpan biodata.");}
+ }catch(err){showMessage("error",err.message||"Terjadi kesalahan saat menyimpan biodata.",true);}
  finally{btn.disabled=false;btn.textContent=isEditing?"SIMPAN PERUBAHAN":"SIMPAN BIODATA";}
 });
 </script>
